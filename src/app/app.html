@@ -1,19 +1,20 @@
 <div class="container-fluid">
   <div class="row">
-    <div class="col-12 bg-danger">
-      title
+    <div class="col-12">
+      <h1 class="text-uppercase">Fave SW People</h1>
     </div>
   </div>
   <div class="row">
-    <div class="col-12 col-lg-3 bg-warning" style="height: 200px;">
-      nav
+    <div class="col-12 col-lg-3" style="height: 200px;">
+      <div class="list-group">
+        <a href="#" class="list-group-item list-group-item-action">Home</a>
+      </div>
     </div>
-    <div class="col-12 col-lg-9 bg-info" style="height: 700px;">
-      content
+    <div class="col-12 col-lg-9">
+      <router-outlet />      
     </div>
 
   </div>
 </div>
 
 
-<router-outlet />
