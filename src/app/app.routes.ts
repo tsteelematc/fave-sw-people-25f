@@ -4,6 +4,7 @@ import { AspriggsFavs } from './aspriggs-favs/aspriggs-favs';
 import { Yyang22Faves } from './yyang22-faves/yyang22-faves';
 import { BfunmakerFaves } from './bfunmaker-faves/bfunmaker-faves';
 import { AkoroliovaFaveSwPeople } from './akoroliova-fave-sw-people/akoroliova-fave-sw-people';
+import { TsteeleFaves } from './tsteele-faves/tsteele-faves';
 
 export const routes: Routes = [
   {
@@ -25,5 +26,9 @@ export const routes: Routes = [
   {
     path: "akoroliova", 
     component: AkoroliovaFaveSwPeople
+  },
+  {
+    path: "tsteele", 
+    component: TsteeleFaves
   }
 ];
