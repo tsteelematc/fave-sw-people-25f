@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
-import { EMPTY, expand, map, reduce, tap } from 'rxjs';
+import { concat, EMPTY, expand, flatMap, map, mergeMap, reduce, tap } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
@@ -22,14 +22,14 @@ export class SwPeopleService {
         x => console.log(x)
       ),
       reduce(
-        (acc: any[], people) => [
+        (acc: any[], currentPagePeople) => [
           ...acc
-          , ...people
+          , ...currentPagePeople
         ]
         , []
       ),
       map(
-        people => people.sort(
+        combinedPeople => combinedPeople.sort(
           (a: any, b: any) => a.name.localeCompare(b.name)
         )
       ),
