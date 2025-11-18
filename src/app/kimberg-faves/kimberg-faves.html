@@ -1,22 +1,23 @@
 <ul class="list-group">
-    <li class="list-group-item list-group-item-secondary text-black-50">
-      Kyle's Faves
+  <li class="list-group-item list-group-item-secondary text-black-50">
+    Kyle's Faves
+  </li>
+  @for (p of people$ | async; track p) {
+    <li 
+      class="list-group-item"
+    >
+      <input 
+        class="form-check-input me-1" 
+        type="checkbox" 
+        value="" 
+        [id]="p.name"
+      >
+      <label 
+        class="form-check-label stretched-link" 
+        [for]="p.name"
+      >
+        {{ p.name }}
+      </label>
     </li>
-    @for (p of people$ | async; track p) {
-      <div>
-        {{ p.name}}
-      </div>
-    }
-  <li class="list-group-item">
-    <input class="form-check-input me-1" type="checkbox" value="" id="firstCheckboxStretched">
-    <label class="form-check-label stretched-link" for="firstCheckboxStretched">First checkbox</label>
-  </li>
-  <li class="list-group-item">
-    <input class="form-check-input me-1" type="checkbox" value="" id="secondCheckboxStretched">
-    <label class="form-check-label stretched-link" for="secondCheckboxStretched">Second checkbox</label>
-  </li>
-  <li class="list-group-item">
-    <input class="form-check-input me-1" type="checkbox" value="" id="thirdCheckboxStretched">
-    <label class="form-check-label stretched-link" for="thirdCheckboxStretched">Third checkbox</label>
-  </li>
+  }
 </ul>
