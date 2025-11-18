@@ -1,1 +1,11 @@
-<p>aspriggs-favs works!</p>
+<ul class="list-group">
+    <li class="list-group-item list-group-item-secondary text-black-50">
+        Austin's faves
+    </li>
+    @for (p of people$ | async; track $index) {
+        <li class="list-group-item">
+            <input type="text" class="form-check-input me-1" type="checkbox" [id]="p.name">
+            <label [for]="p.name" class="fpr,=check-label stretched-link">{{ p.name }}</label>
+        </li>
+    }
+</ul>
