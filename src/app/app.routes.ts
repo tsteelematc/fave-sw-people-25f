@@ -6,13 +6,14 @@ import { Yyang22Faves } from './yyang22-faves/yyang22-faves';
 import { BfunmakerFaves } from './bfunmaker-faves/bfunmaker-faves';
 import { AkoroliovaFaveSwPeople } from './akoroliova-fave-sw-people/akoroliova-fave-sw-people';
 import { MnguyenFaves } from './mnguyen-faves/mnguyen-faves';
+import { TsteeleFaves } from './tsteele-faves/tsteele-faves';
 
 export const routes: Routes = [
   {
     path: 'csmith',
     component: CsmithFaves
-  },
-	{
+  }
+	, {
     path: "aspriggs",
     component: AspriggsFavs
   },
@@ -35,5 +36,9 @@ export const routes: Routes = [
   {
     path: "mnguyen", 
     component: MnguyenFaves
+  },
+  {
+    path: "tsteele", 
+    component: TsteeleFaves
   },
 ];
