@@ -1,5 +1,12 @@
 <ul class="list-group">
-    <li class="list-group-item list-group-item-secondary text-black-50">Kyle's Faves</li>
+    <li class="list-group-item list-group-item-secondary text-black-50">
+      Kyle's Faves
+    </li>
+    @for (p of people$ | async; track p) {
+      <div>
+        {{ p.name}}
+      </div>
+    }
   <li class="list-group-item">
     <input class="form-check-input me-1" type="checkbox" value="" id="firstCheckboxStretched">
     <label class="form-check-label stretched-link" for="firstCheckboxStretched">First checkbox</label>
