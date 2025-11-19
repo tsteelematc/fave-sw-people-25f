@@ -2,6 +2,26 @@
   <li class="list-group-item list-group-item-secondary text-black-50">
     Tom's Faves
   </li>
+  <li class="list-group-item">
+	<button 
+		class="btn btn-link"
+		(click)="promisesAsThenables()"
+	>
+		Promises as "then-ables"
+	</button>
+	<button 
+		class="btn btn-link"
+		(click)="promisesWithAsyncAwait()"
+	>
+		Promises with async/await ! ! !
+	</button>
+		<button 
+		class="btn btn-link"
+		(click)="promisesFun()"
+	>
+		Promises fun ! ! !
+	</button>
+  </li>
   @if(people$ | async; as people){
     @for (p of people; track p) {
       <li 
