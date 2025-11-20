@@ -7,4 +7,6 @@ import { inject, Injectable } from '@angular/core';
 export class SwPeopelService {
   private http = inject(HttpClient);
   
+
+  
 }
