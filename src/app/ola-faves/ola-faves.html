@@ -7,19 +7,26 @@
 
 <li class="list-group-item" > 
     <button 
-      class="btn btn-link bg-primary text-white m-2"
+      class="btn btn-sm btn-primary m-2"
       (click)="promisesAsThenables()"
     >
       Primises as "thenables"
 
     </button>
     <button 
-      class="btn btn-link bg-primary text-white"
+      class="btn btn-sm btn-primary m2"
       (click)="promisesWithAsynAwait()"  
     >
       Promises with async await and try/catch
     </button>
+    <button 
+      class="btn btn-sm btn-primary m-2"
+      (click)="promisesFun()"
+      >
+      Primises Fun !!!
+   </button>
   </li> 
+
   
     @if(people$ | async; as people){
     @for (p of people; track p){
