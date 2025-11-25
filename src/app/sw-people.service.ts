@@ -42,6 +42,7 @@ export class SwPeopleService {
 
     // return Promise.reject("No soup for you : - )");
 
+
     const pageObvservable = this.http.get<any>('https://swapi.dev/api/people/?page=1').pipe(
       map(
         response => response.results
@@ -49,6 +50,7 @@ export class SwPeopleService {
     );
 
     return firstValueFrom(pageObvservable);
+    
   }
 
   public getPeoplePageTwo() {
@@ -63,4 +65,5 @@ export class SwPeopleService {
 
     return firstValueFrom(pageObvservable);
   }
+
 }
