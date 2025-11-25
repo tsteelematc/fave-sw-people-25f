@@ -1,22 +1,24 @@
 import { Component, inject } from '@angular/core';
+// import { SwPeopelService } from '../sw-peopel.service';
 import { SwPeopleService } from '../sw-people.service';
 import { AsyncPipe } from '@angular/common';
-import { ConstantPool } from '@angular/compiler';
 
 @Component({
-  selector: 'app-yyang22-faves',
+  selector: 'app-ola-faves',
   imports: [AsyncPipe],
-  templateUrl: './yyang22-faves.html',
-  styleUrl: './yyang22-faves.css',
+  templateUrl: './ola-faves.html',
+  styleUrl: './ola-faves.css',
 })
-export class Yyang22Faves {
+export class OlaFaves {
+  // private readonly peopleSvc = inject(SwPeopelService);
   private readonly peopleSvc = inject(SwPeopleService);
 
   protected readonly people$ = this.peopleSvc.getPeopleFromSwapiApi();
 
-  protected promiseAsThenables() {
+  protected promisesAsThenables(){
+    console.log("Promise Return Begins here ")
 
-    const page1 = this.peopleSvc.getPeoplePageOne() 
+    const page1 = this.peopleSvc.getPeoplePageOne()
       .then(
         data => {
           console.log(data);
@@ -34,44 +36,48 @@ export class Yyang22Faves {
         err => console.warn(err)
       )
     ;
-
   }
 
-  protected async promiseWithAsyncAwait() {
-
+  protected async promisesWithAsynAwait(){
     try {
       const page1 = await this.peopleSvc.getPeoplePageOne();
-      console.log(page1); // ? ? ?
+      console.log(page1);
 
-      const page2 = await this.peopleSvc.getPeoplePageTwo();
-      console.log(page2); // ? ? ? 
+      const page2 = await this.peopleSvc.getPeoplePageOne();
+      console.log(page2);
     }
     catch (err) {
-      console.warn("catch block", err);
+      console.warn(
+        "catch blak:", 
+        err );
     }
   }
 
-  protected async promisesFun() {
-
-    try {
+  protected async promisesFun(){
+      try {
       const page1 = this.peopleSvc.getPeoplePageOne();
-      //console.log(page1); // ? ? ?
+      // console.log(page1);
 
-      const page2 = this.peopleSvc.getPeoplePageTwo();
-      //console.log(page2); // ? ? ? 
-
-      const data = await Promise.all(
+      const page2 = this.peopleSvc.getPeoplePageOne();
+      // console.log(page2);
+      
+      
+      // const data = await Promise.race(
       // const data = await Promise.any(
-      //const data = await Promise.race(
+      const data = await Promise.all(
         [
           page1
           , page2
         ]
       );
-      console.log(data[0].name);
+      console.log(
+        data[0].name
+      );
     }
     catch (err) {
-      console.warn("catch block", err);
+      console.warn(
+        "catch blak:", 
+        err );
     }
   }
 }

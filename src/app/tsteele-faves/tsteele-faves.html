@@ -3,23 +3,24 @@
     Tom's Faves
   </li>
   <li class="list-group-item">
-    <button class="btn btn-link"
-    (click)="promisesAsThenables()"
+    <button 
+      class="btn btn-link"
+      (click)="promisesAsThenables()"
     >
-    Promises as "thenables"
-  </button>
-  <button 
-    class="btn btn-link"
-    (click)="promisesWithAsyncAwait()"
+      Promises as "thenables"
+    </button>
+    <button 
+      class="btn btn-link"
+      (click)="promisesWithAsyncAwait()"
     >
-    Promises with async/await and try/catch
-  </button>
-  <button 
-  class="btn btn-link"
-  (click)="promisesFun()"
-  >
-    Promises fun ! ! !
-  </button>
+      Promises with async/await and try/catch
+    </button>
+    <button 
+      class="btn btn-link"
+      (click)="promisesFun()"
+    >
+      Promises fun ! ! !
+    </button>
   </li>
   @if(people$ | async; as people){
     @for (p of people; track p) {
