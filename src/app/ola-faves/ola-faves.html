@@ -1,0 +1,57 @@
+<ul class="list-group">
+  <li 
+    class="list-group-item list-group-item-secondary text-black-50"
+  >
+    Ola's Faves
+</li>
+
+<li class="list-group-item" > 
+    <button 
+      class="btn btn-sm btn-primary m-2"
+      (click)="promisesAsThenables()"
+    >
+      Promises as "thenables"
+
+    </button>
+    <button 
+      class="btn btn-sm btn-primary m2"
+      (click)="promisesWithAsynAwait()"  
+    >
+      Promises with async await and try/catch
+    </button>
+    <button 
+      class="btn btn-sm btn-primary m-2"
+      (click)="promisesFun()"
+      >
+      Promises Fun !!!
+   </button>
+  </li> 
+
+  
+    @if(people$ | async; as people){
+    @for (p of people; track p){
+  <li 
+    class="list-group-item"
+  >
+    <input 
+      class="form-check-input me-3" 
+      type="checkbox" 
+      value="" 
+      [id]="p.name"
+    >
+    <label 
+      class="form-check-label stretched-link" 
+      [for]="p.name"
+    >
+      {{ p.name }}
+      </label>
+      </li>
+    }
+  } @else {
+    <li 
+      class="list-group-item list-group-item-info"
+    >
+      Loading...
+    </li>
+  }
+</ul>
