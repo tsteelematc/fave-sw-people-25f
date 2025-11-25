@@ -54,38 +54,4 @@ export class TsteeleFaves {
     }
   }
 
-  protected async promisesFun() {
-
-    // const await = 0;
-
-    try {
-
-      const page1 = this.peopleSvc.getPeoplePageOne();
-      // console.log(page1); // ? ? ?
-
-      const page2 = this.peopleSvc.getPeoplePageTwo();
-      // console.log(page2); // ? ? ?
-
-      const data = await Promise.all(
-      // const data = await Promise.race(
-      // const data = await Promise.any(
-        [
-          page1 
-          , page2
-        ]
-      );
-      console.log(
-        data[0].name
-      ); // ? ? ? 
-
-    }
-
-    catch (err) {
-      console.warn(
-        "catch block"
-        , err
-      );
-    }
-  }
-
 }
