@@ -7,6 +7,7 @@ type FaveDisplay = {
   name: string;
   checked: boolean;
   heightInCentimeters: number;
+  invalidHeight: boolean;
 };
 
 @Component({
@@ -27,7 +28,7 @@ export class TsteeleFaves implements OnInit {
 
   protected avgFaveHeight = computed(
     () => {
-      const faves = this.people().filter(x => x.checked);
+      const faves = this.people().filter(x => x.checked && !x.invalidHeight);
       const sumHeight = faves.reduce(
         (acc, x) => acc + x.heightInCentimeters 
         , 0
@@ -50,7 +51,8 @@ export class TsteeleFaves implements OnInit {
         x => ({
           name: x.name,
           checked: false,
-          heightInCentimeters: Number.parseInt(x.height)
+          heightInCentimeters: Number.parseInt(x.height),
+          invalidHeight: Number.isNaN(Number.parseInt(x.height))
         })
       )
     );

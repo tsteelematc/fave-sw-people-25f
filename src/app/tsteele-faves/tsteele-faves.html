@@ -44,7 +44,9 @@
         >
         <label 
           class="form-check-label stretched-link" 
+          [class.text-warning]="p.invalidHeight"
           [for]="p.name"
+          [title]="p.invalidHeight ? 'Height: Unknown' : `Height: ${p.heightInCentimeters}cm`"
         >
           {{ p.name }}
         </label>
