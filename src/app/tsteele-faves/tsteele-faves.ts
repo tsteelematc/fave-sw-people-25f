@@ -37,8 +37,8 @@ export class TsteeleFaves implements OnInit {
       // return sumHeight / faves.length;
 
       return faves.length > 0
-        ? sumHeight / faves.length
-        : 0
+        ? (sumHeight / faves.length).toFixed(2)
+        : "0"
       ;
     }
   );
