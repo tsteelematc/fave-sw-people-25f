@@ -1,6 +1,5 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, inject, OnInit, signal, WritableSignal } from '@angular/core';
 import { SwPeopleService } from '../sw-people.service';
-import { AsyncPipe } from '@angular/common';
 import { firstValueFrom } from 'rxjs';
 
 type FaveDisplay = {
@@ -11,7 +10,7 @@ type FaveDisplay = {
 
 @Component({
   selector: 'app-bfunmaker-faves',
-  imports: [AsyncPipe],
+  imports: [],
   templateUrl: './bfunmaker-faves.html',
   styleUrl: './bfunmaker-faves.css',
 })
@@ -19,10 +18,20 @@ export class BfunmakerFaves implements OnInit {
   
   private readonly peopleSvc = inject(SwPeopleService);
 
-  protected people: any[] | undefined;
+  protected people: WritableSignal<FaveDisplay[]>  = signal([]);
 
   async ngOnInit() {
-    this.people = await firstValueFrom(this.peopleSvc.getPeopleFromSwapiApi());
+    const people = await firstValueFrom(this.peopleSvc.getPeopleFromSwapiApi());
+
+    this.people.set(
+      people.map(
+        swapiPerson => ({
+          name: swapiPerson.name,
+          checked: false,
+          heightInCentimeters: Number(swapiPerson.height)
+        })
+      )
+    )
   }
 
   protected promisesAsThenables() {
