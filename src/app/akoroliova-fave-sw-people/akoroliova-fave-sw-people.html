@@ -21,7 +21,7 @@
         Faves Fun Fact: most popular eye color is green
       </p>
     </li>
-  @if(people$ | async; as people){
+  @if(people){
     @for (p of people; track p) {
       <li 
         class="list-group-item"
