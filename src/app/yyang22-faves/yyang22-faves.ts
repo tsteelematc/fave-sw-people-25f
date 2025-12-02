@@ -1,7 +1,8 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { SwPeopleService } from '../sw-people.service';
 import { AsyncPipe } from '@angular/common';
 import { ConstantPool } from '@angular/compiler';
+import { Observable } from 'rxjs';
 
 type FaveDisplay = {
   name: string;
@@ -15,10 +16,18 @@ type FaveDisplay = {
   templateUrl: './yyang22-faves.html',
   styleUrl: './yyang22-faves.css',
 })
-export class Yyang22Faves {
+
+export class Yyang22Faves implements OnInit {
   private readonly peopleSvc = inject(SwPeopleService);
 
-  protected readonly people$ = this.peopleSvc.getPeopleFromSwapiApi();
+  protected people$: Observable<any[]> | undefined; // = this.peopleSvc.getPeopleFromSwapiApi();
+
+
+  ngOnInit(): void {
+    this.people$ = this.peopleSvc.getPeopleFromSwapiApi();
+  }
+
+
 
   protected promiseAsThenables() {
 
@@ -80,4 +89,5 @@ export class Yyang22Faves {
       console.warn("catch block", err);
     }
   }
+
 }
