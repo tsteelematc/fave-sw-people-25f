@@ -20,6 +20,14 @@
         Promises fun ! ! !
       </button>
     </li>
+    <li class="list-group-item list-group-item-dark">
+      <p>
+        Fave's Count: 0
+      </p>
+      <p>
+        Fave's Fun Fact: Avg Height 0cm
+      </p>
+    </li>
     @if (people$ | async; as people) {
       @for (p of people$ | async; track p) {
         <li 
