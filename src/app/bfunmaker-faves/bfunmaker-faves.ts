@@ -1,6 +1,7 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { SwPeopleService } from '../sw-people.service';
 import { AsyncPipe } from '@angular/common';
+import { firstValueFrom } from 'rxjs';
 
 type FaveDisplay = {
   name: string;
@@ -14,10 +15,15 @@ type FaveDisplay = {
   templateUrl: './bfunmaker-faves.html',
   styleUrl: './bfunmaker-faves.css',
 })
-export class BfunmakerFaves {
+export class BfunmakerFaves implements OnInit {
+  
   private readonly peopleSvc = inject(SwPeopleService);
 
-  protected readonly people$ = this.peopleSvc.getPeopleFromSwapiApi();
+  protected people: any[] | undefined;
+
+  async ngOnInit() {
+    this.people = await firstValueFrom(this.peopleSvc.getPeopleFromSwapiApi());
+  }
 
   protected promisesAsThenables() {
     const page1 = this.peopleSvc.getPeoplePageOne()
