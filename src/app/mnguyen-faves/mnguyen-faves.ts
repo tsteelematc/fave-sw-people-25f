@@ -1,6 +1,7 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { SwPeopleService } from '../sw-people.service';
 import { AsyncPipe } from '@angular/common';
+import { Observable } from 'rxjs';
 
 type FaveDisplay = 
 {
@@ -15,10 +16,15 @@ type FaveDisplay =
   templateUrl: './mnguyen-faves.html',
   styleUrl: './mnguyen-faves.css',
 })
-export class MnguyenFaves {
+export class MnguyenFaves implements OnInit {
   private readonly peopleSvc = inject(SwPeopleService);
 
-  protected readonly people$ = this.peopleSvc.getPeopleFromSwapiApi();
+  protected people$: Observable<any[]> | undefined;
+
+ngOnInit(): void 
+{
+  this.people$ = this.peopleSvc.getPeopleFromSwapiApi();
+}
 
   protected promisesAsThenables()
   {
