@@ -29,7 +29,8 @@
       </p>
     </li>
     @if (people) {
-      @for (p of people | async; track p) {
+      <!-- @for (p of people | async; track p) { -->
+      @for (p of people; track p) {
         <li 
           class="list-group-item"
         >
