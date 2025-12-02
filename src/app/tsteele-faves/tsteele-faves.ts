@@ -1,6 +1,7 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { SwPeopleService } from '../sw-people.service';
 import { AsyncPipe } from '@angular/common';
+import { Observable } from 'rxjs';
 
 
 type FaveDisplay = {
@@ -15,10 +16,14 @@ type FaveDisplay = {
   templateUrl: './tsteele-faves.html',
   styleUrl: './tsteele-faves.css',
 })
-export class TsteeleFaves {
+export class TsteeleFaves implements OnInit {
   private readonly peopleSvc = inject(SwPeopleService);
 
-  protected readonly people$ = this.peopleSvc.getPeopleFromSwapiApi();
+  protected people$: Observable<any[]> | undefined;
+
+  ngOnInit(): void {
+    this.people$ = this.peopleSvc.getPeopleFromSwapiApi();
+  }
 
   protected promisesAsThenables() {
     const page1 = this.peopleSvc.getPeoplePageOne()
@@ -93,5 +98,4 @@ export class TsteeleFaves {
       );
     }
   }
-
 }
