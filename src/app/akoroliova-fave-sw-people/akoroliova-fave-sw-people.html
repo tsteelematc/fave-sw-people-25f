@@ -15,7 +15,7 @@
     </li>
     <li class="list-group-item list-group-item-dark">
       <p>
-        Fave's count: 0
+        Fave's count: {{faveCount()}}
       </p>
       <p>
         Faves Fun Fact: most popular eye color is green
@@ -29,7 +29,8 @@
         <input 
           class="form-check-input me-3" 
           type="checkbox" 
-          value="" 
+          [checked]="p.checked" 
+          (change)="toggleChecked(p)"
           [id]="p.name"
         >
         <label 
