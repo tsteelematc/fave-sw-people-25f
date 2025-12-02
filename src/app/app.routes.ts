@@ -8,6 +8,7 @@ import { AkoroliovaFaveSwPeople } from './akoroliova-fave-sw-people/akoroliova-f
 import { MnguyenFaves } from './mnguyen-faves/mnguyen-faves';
 import { TsteeleFaves } from './tsteele-faves/tsteele-faves';
 import { OlaFaves } from './ola-faves/ola-faves';
+import { FsindarFaves } from './fsindar-faves/fsindar-faves';
 
 export const routes: Routes = [
   {
@@ -45,5 +46,9 @@ export const routes: Routes = [
   {
     path: "ola", 
     component: OlaFaves 
+  },
+  {
+    path: "fsinder", 
+    component: FsindarFaves 
   },
 ];
