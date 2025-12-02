@@ -1,6 +1,5 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, inject, OnInit, signal, WritableSignal } from '@angular/core';
 import { SwPeopleService } from '../sw-people.service';
-import { AsyncPipe } from '@angular/common';
 import { firstValueFrom, Observable } from 'rxjs';
 
 type FaveDisplay = 
@@ -12,18 +11,23 @@ type FaveDisplay =
 
 @Component({
   selector: 'app-mnguyen-faves',
-  imports: [AsyncPipe],
+  imports: [],
   templateUrl: './mnguyen-faves.html',
   styleUrl: './mnguyen-faves.css',
 })
 export class MnguyenFaves implements OnInit {
   private readonly peopleSvc = inject(SwPeopleService);
 
-  protected people: any[] | undefined;
+  protected people: WritableSignal<FaveDisplay[]> = signal([]);
 
 async ngOnInit() 
 {
-  this.people = await firstValueFrom(this.peopleSvc.getPeopleFromSwapiApi());
+  const people = await firstValueFrom(this.peopleSvc.getPeopleFromSwapiApi());
+  this.people.set(people.map(x => ({
+    name: x.name,
+    checked: false,
+    heightInCentimeters: Number(x.height),
+  })));
 }
 
   protected promisesAsThenables()
