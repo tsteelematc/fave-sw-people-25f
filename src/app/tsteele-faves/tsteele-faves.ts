@@ -74,7 +74,6 @@ export class TsteeleFaves implements OnInit {
   // Promise learning funcs below...
   //
   protected promisesAsThenables() {
-
     const page1 = this.peopleSvc.getPeoplePageOne()
       .then(
         data => {
