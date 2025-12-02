@@ -3,6 +3,12 @@ import { SwPeopleService } from '../sw-people.service';
 import { AsyncPipe } from '@angular/common';
 import { ConstantPool } from '@angular/compiler';
 
+type FaveDisplay = {
+  name: string;
+  checked: boolean;
+  heightInCentimeters: number;
+};
+
 @Component({
   selector: 'app-yyang22-faves',
   imports: [AsyncPipe],
