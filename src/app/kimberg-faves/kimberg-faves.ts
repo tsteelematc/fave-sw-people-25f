@@ -2,6 +2,13 @@ import { Component, inject } from '@angular/core';
 import { SwPeopleService } from '../sw-people.service';
 import { AsyncPipe } from '@angular/common';
 
+
+type FaveDisplay = {
+  name: string;
+  checked: boolean;
+  heightInCentimeters: string;
+};
+
 @Component({
   selector: 'app-kimberg-faves',
   imports: [ AsyncPipe],
