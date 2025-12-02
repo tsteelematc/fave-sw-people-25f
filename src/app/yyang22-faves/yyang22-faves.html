@@ -28,9 +28,9 @@
         Fave's Fun Fact: Avg Height 0cm
       </p>
     </li>
-    @if (people) {
+    @if (people().length > 0) {
       <!-- @for (p of people | async; track p) { -->
-      @for (p of people; track p) {
+      @for (p of people(); track p) {
         <li 
           class="list-group-item"
         >

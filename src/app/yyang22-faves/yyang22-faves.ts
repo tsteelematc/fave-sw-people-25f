@@ -1,4 +1,4 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, inject, OnInit, signal, WritableSignal } from '@angular/core';
 import { SwPeopleService } from '../sw-people.service';
 import { AsyncPipe } from '@angular/common';
 import { ConstantPool } from '@angular/compiler';
@@ -12,7 +12,7 @@ type FaveDisplay = {
 
 @Component({
   selector: 'app-yyang22-faves',
-  imports: [AsyncPipe],
+  imports: [],
   templateUrl: './yyang22-faves.html',
   styleUrl: './yyang22-faves.css',
 })
@@ -20,16 +20,24 @@ type FaveDisplay = {
 export class Yyang22Faves implements OnInit {
   private readonly peopleSvc = inject(SwPeopleService);
 
-  protected people: any[] | undefined; // = this.peopleSvc.getPeopleFromSwapiApi();
+  protected people: WritableSignal<FaveDisplay[]> = signal([]); // = this.peopleSvc.getPeopleFromSwapiApi();
 
 
   async ngOnInit() {
-    this.people = await firstValueFrom(
+    const people = await firstValueFrom(
       this.peopleSvc.getPeopleFromSwapiApi()
     );
+
+    this.people.set(
+      people.map(
+        x => ({
+          name: x.name,
+          checked: false,
+          heightInCentimeters: Number(x.height),
+        })
+      )
+    );
   }
-
-
 
   protected promiseAsThenables() {
 
