@@ -12,4 +12,22 @@ export class TsteeleFaves {
   private readonly peopleSvc = inject(SwPeopleService);
 
   protected readonly people$ = this.peopleSvc.getPeopleFromSwapiApi();
+
+
+  protected promisesAsThenables() {
+    
+    const page1 = this.peopleSvc.getPeoplePageOne().then(data => {
+      console.log(data);
+
+      const page2 = this.peopleSvc.getPeoplePageTwo()
+       .then(
+          data => console.log(data)
+       )
+       .catch(
+          err => console.warn(err)
+       )
+    }).catch(
+      err => console.warn(err)
+    );
+  }
 }
