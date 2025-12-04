@@ -7,6 +7,7 @@ type FaveDisplay =
   name: string;
   checked: boolean;
   heightInCentimeters: number;
+  invalidHeight: boolean;
 };
 
 @Component({
@@ -20,9 +21,21 @@ export class MnguyenFaves implements OnInit {
 
   protected people: WritableSignal<FaveDisplay[]> = signal([]);
 
-  protected faveCount = computed
-  (
-    () => this.people().filter(x => x.checked).length
+  protected faveCount : any = computed(
+    () => {
+    const faves = this.people().filter(
+      person => person.checked && !person.invalidHeight
+    );
+    // Sum their height
+    const sumOfFavesHeightInCentimeters = faves.reduce(
+      (acc, favePerson) => acc + favePerson.heightInCentimeters,
+      0,
+    );
+    // Return their avg height
+    return faves.length > 0
+    ? `Avg Height ${(sumOfFavesHeightInCentimeters / faves.length).toFixed(2)} cm ${this.faveCount() != faves.length? '** some faves are missing height' : ''}`
+    : "No Faves Selected";
+  }
   );
 
 async ngOnInit() 
@@ -32,6 +45,7 @@ async ngOnInit()
     name: x.name,
     checked: false,
     heightInCentimeters: Number(x.height),
+    invalidHeight: Number.isNaN(Number(x.height)),
   })));
 }
 
