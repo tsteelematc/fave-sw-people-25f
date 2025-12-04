@@ -1,17 +1,54 @@
-import { Component, inject } from '@angular/core';
+import { Component, computed, inject, OnInit, signal, WritableSignal } from '@angular/core';
 import { SwPeopleService } from '../sw-people.service';
-import { AsyncPipe } from '@angular/common';
+import { firstValueFrom } from 'rxjs';
+
+type FaveDisplay = {
+  name: string;
+  checked: boolean;
+  heightInCentimeters: number;
+};
 
 @Component({
   selector: 'app-tsteele-faves',
-  imports: [AsyncPipe],
+  imports: [],
   templateUrl: './tsteele-faves.html',
   styleUrl: './tsteele-faves.css',
 })
-export class TsteeleFaves {
+export class TsteeleFaves implements OnInit {
   private readonly peopleSvc = inject(SwPeopleService);
 
-  protected readonly people$ = this.peopleSvc.getPeopleFromSwapiApi();
+  protected people: WritableSignal<FaveDisplay[]> = signal([]);
+
+  protected faveCount = computed(
+    () => this.people().filter(x => x.checked).length
+  );
+  
+  async ngOnInit() {
+    const people = await firstValueFrom(
+      this.peopleSvc.getPeopleFromSwapiApi()
+    );
+
+    this.people.set(
+      people.map(
+        x => ({
+          name: x.name,
+          checked: false,
+          heightInCentimeters: Number(x.height),
+        })
+      )
+    );
+  }
+
+  protected readonly toggleChecked = (personToToggle: FaveDisplay) => this.people.update(
+    previousPeople => previousPeople.map(
+      person => ({
+        ...person,
+        checked: person.name === personToToggle.name 
+          ? !person.checked
+          : person.checked
+      })
+    )
+  );
 
   protected promisesAsThenables() {
     const page1 = this.peopleSvc.getPeoplePageOne()
@@ -86,5 +123,4 @@ export class TsteeleFaves {
       );
     }
   }
-
 }
