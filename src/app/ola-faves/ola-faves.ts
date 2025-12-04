@@ -7,6 +7,7 @@ type FaveDisplay = {
   name: string;
   checked: boolean;
   heightInCentimeters: number;
+  invalidHeight: boolean;
 }
 
 @Component({
@@ -24,6 +25,23 @@ export class OlaFaves implements OnInit {
   protected faveCount = computed(
     () => this.people().filter( x => x.checked ).length
   );
+
+  protected avgFaveHeight = computed(
+    () => {
+      const favesWithHeightInfo = this.people().filter(x => x.checked /*&& !x.invalidHeight*/);
+      const sumHeight = favesWithHeightInfo.reduce(
+        (acc, x) => acc + x.heightInCentimeters 
+        , 0
+      );
+
+      // return sumHeight / favesWithHeightInfo.length;
+
+      return favesWithHeightInfo.length > 0
+        ? `${(sumHeight / favesWithHeightInfo.length).toFixed(2)}cm ${this.faveCount() != favesWithHeightInfo.length ? " **some faves have missing height information" : ""}`
+        : "N/A"
+      ;
+    }
+  );
   
   async ngOnInit() {
     const people = await firstValueFrom( 
@@ -35,7 +53,8 @@ export class OlaFaves implements OnInit {
         x => ({
           name: x.name,
           checked: false,
-          heightInCentimeters: Number(x.height)
+          heightInCentimeters: Number(x.height),
+          invalidHeight: Number.isNaN(Number(x.height)),
         })
       )
     );

@@ -32,7 +32,7 @@
       Faves Count: {{ faveCount() }}
     </p>
     <p>
-      Faves Fun Fact: Avg Height is 0 cm
+      Faves Fun Fact: Avg Height is {{avgFaveHeight()}} cm
     </p>
   </li>
   
@@ -51,6 +51,8 @@
     <label 
       class="form-check-label stretched-link" 
       [for]="p.name"
+      [class.text-warning]="p.invalidHeight"
+      [title]="p.invalidHeight? 'Height: unknown' : ` Height: ${p.invalidHeight}` "
     >
       {{ p.name }}
       </label>
