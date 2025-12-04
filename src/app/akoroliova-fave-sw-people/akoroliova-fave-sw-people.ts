@@ -6,6 +6,7 @@ type FaveDisplay = {
   name: string;
   checked: boolean;
   heightInCentimeters: number;
+  invalidHeight: boolean;
 };
 
 @Component({
@@ -18,11 +19,31 @@ export class AkoroliovaFaveSwPeople implements OnInit {
   private readonly peopleSvc = inject(SwPeopleService);
   //private readonly Promise = inject(SwPeopleService);
 
+
+
+
   protected people : WritableSignal<FaveDisplay[]> = signal([]);
 
   protected faveCount = computed(
     () => this.people().filter(x => x.checked).length
   );
+
+protected averageFaveHeight = computed(() => {
+  const faves = this.people().filter(
+    person => person.checked && !person.invalidHeight
+  );
+
+  const sumOfFaveHeightsInCentimeters = faves.reduce(
+    (acc, favePerson) => acc + favePerson.heightInCentimeters,
+    0
+  );
+
+  return this.faveCount() > 0 
+    ? faves.length > 0 
+    ? `Average height ${(sumOfFaveHeightsInCentimeters / faves.length).toFixed(2)} cm  ${this.faveCount() != faves.length ? '** some faves are missing height info **' : ''}`
+    : '**all selected faves missing height info**'
+    : "No faves selected";
+});
 
   async ngOnInit() {
     const people= await firstValueFrom (this.peopleSvc.getPeopleFromSwapiApi());
@@ -32,6 +53,7 @@ export class AkoroliovaFaveSwPeople implements OnInit {
           name: x.name,
           checked: false,
           heightInCentimeters: Number(x.height),
+          invalidHeight: Number.isNaN(Number(x.height)),
         })
       )
     );

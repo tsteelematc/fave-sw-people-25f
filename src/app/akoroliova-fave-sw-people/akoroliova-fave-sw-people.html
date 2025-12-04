@@ -18,7 +18,7 @@
         Fave's count: {{faveCount()}}
       </p>
       <p>
-        Faves Fun Fact: most popular eye color is green
+        Faves Fun Fact: {{averageFaveHeight()}}
       </p>
     </li>
   @if(people().length > 0){
@@ -36,6 +36,8 @@
         <label 
           class="form-check-label stretched-link" 
           [for]="p.name"
+          [class.text-warning]="p.invalidHeight"
+          [title]="p.invalidHeight ? 'Height: unknown' : `Height: ${p.heightInCentimeters} cm`"
         >
           {{ p.name }}
         </label>
