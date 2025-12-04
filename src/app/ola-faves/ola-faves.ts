@@ -1,4 +1,4 @@
-import { Component, inject, OnInit, signal, Signal, WritableSignal } from '@angular/core';
+import { Component, computed, inject, OnInit, signal, Signal, WritableSignal } from '@angular/core';
 // import { SwPeopelService } from '../sw-peopel.service';
 import { SwPeopleService } from '../sw-people.service';
 import { firstValueFrom } from 'rxjs';
@@ -21,6 +21,10 @@ export class OlaFaves implements OnInit {
 
   protected people: WritableSignal<FaveDisplay[]> = signal([]); 
 
+  protected faveCount = computed(
+    () => this.people().filter( x => x.checked ).length
+  );
+  
   async ngOnInit() {
     const people = await firstValueFrom( 
     this.peopleSvc.getPeopleFromSwapiApi()
@@ -28,14 +32,27 @@ export class OlaFaves implements OnInit {
 
     this.people.set(
       people.map(
-        p => ({
-          name: p.name,
+        x => ({
+          name: x.name,
           checked: false,
-          heightInCentimeters: Number(p.height)
-        } as FaveDisplay)
+          heightInCentimeters: Number(x.height)
+        })
       )
     );
   }  
+
+  protected readonly toggleChecked = (personToggle: FaveDisplay) => {
+    this.people.update(
+      previousPeople => previousPeople.map(
+        person => ({
+          ...person,
+          checked: person.name === personToggle.name 
+            ? !person.checked 
+            : person.checked
+        })
+      )
+    );
+  };
 
   protected promisesAsThenables(){
     console.log("Promise Return Begins here ")
