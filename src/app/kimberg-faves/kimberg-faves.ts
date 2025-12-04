@@ -7,6 +7,7 @@ type FaveDisplay = {
   name: string;
   checked: boolean;
   heightInCentimeters: number;
+  invalidHeight: boolean;
 };
 
 @Component({
@@ -16,13 +17,51 @@ type FaveDisplay = {
   styleUrl: './kimberg-faves.css',
 })
 export class KimbergFaves implements OnInit {
+
+  //
+  // DI - dependency injection...
+  //
   private peopleSvc = inject(SwPeopleService);
+
+  //
+  // Signals...
+  //
 
   protected people: WritableSignal<FaveDisplay[]> = signal([]);
 
   protected faveCount = computed(
     () => this.people().filter(x => x.checked).length
   );
+
+  protected avgFaveHeight = computed(
+    () => {
+      
+      // Get selected faves
+      const faves = this.people().filter(
+        person => person.checked && !person.invalidHeight
+      );
+
+      // Sum their height
+      const sumOfFavesHeightInCentimeters = faves.reduce(
+        (acc, favePerson) => acc + favePerson.heightInCentimeters,
+        0,
+      );
+
+      // Return their avg height
+      return this.faveCount() > 0
+      ? faves.length > 0
+        ? `Avg Height ${(sumOfFavesHeightInCentimeters / faves.length).toFixed(2)} cm  ${this.faveCount() != faves.length ? '** some faves are missing height info' : ''}`
+        : '** All Selected Faves Missing Height Info'
+        : "No faves selected"
+      ;
+
+    }
+  );
+
+  //
+  // Other methods/funcs
+  //
+
   async ngOnInit() {
     const people = await firstValueFrom(
       this.peopleSvc.getPeopleFromSwapiApi()
@@ -34,6 +73,7 @@ export class KimbergFaves implements OnInit {
           name: x.name,
           checked: false,
           heightInCentimeters: Number(x.height),
+          invalidHeight: Number.isNaN(Number(x.height))
         })
       )
     );
