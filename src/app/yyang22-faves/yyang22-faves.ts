@@ -9,6 +9,7 @@ type FaveDisplay = {
   checked: boolean;
   heightInCentimeters: number;
   invalidHeight: boolean;
+  hairColor: string;
 };
 
 @Component({
@@ -48,6 +49,7 @@ export class Yyang22Faves implements OnInit {
         0, 
 
       );
+
       // Return their avg height
       return this.faveCount() > 0 
         ? faves.length > 0
@@ -56,6 +58,49 @@ export class Yyang22Faves implements OnInit {
         : "No Faves Selected"
         
       ;
+    }
+  );
+
+  protected brownHairRatio = computed(
+    () => {     
+
+      // Get selected faves
+      const faves = this.people().filter(
+        person => person.checked
+      );
+
+      // Count person with brown hair
+      const brownHaircount = faves.filter(
+        person => person.hairColor === 'brown'
+        )
+        .reduce(
+          count => count + 1, 0
+        );
+
+      // Count person with Not brown hair
+      const notBrownHaircount = faves.filter(
+        person => person.hairColor !== 'brown' 
+        )
+        .reduce(
+          count => count + 1, 0
+        );
+
+      // Make a ratio of n/a
+      const countNA = faves.filter(
+        person => person.hairColor === 'n/a' 
+        )
+        .reduce(
+          count => count + 1, 0
+        );
+
+
+      
+      // Return the ratio of males and females
+      return `Brown: ${brownHaircount} Not Brown: ${notBrownHaircount}` + 
+              (countNA > 0 ? `  Hair Color is n/a : ${countNA}` : '')
+              ;
+      
+
     }
   );
   
@@ -74,6 +119,7 @@ export class Yyang22Faves implements OnInit {
           checked: false,
           heightInCentimeters: Number(x.height),
           invalidHeight: Number.isNaN(Number(x.height)),
+          hairColor: x.hair_color,
         })
       )
     );
