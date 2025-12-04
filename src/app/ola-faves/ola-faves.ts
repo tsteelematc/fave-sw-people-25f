@@ -1,7 +1,14 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 // import { SwPeopelService } from '../sw-peopel.service';
 import { SwPeopleService } from '../sw-people.service';
 import { AsyncPipe } from '@angular/common';
+import { Observable } from 'rxjs';
+
+type FaveDisplay = {
+  name: string;
+  checked: boolean;
+  heightInCentimeters: number;
+}
 
 @Component({
   selector: 'app-ola-faves',
@@ -9,11 +16,15 @@ import { AsyncPipe } from '@angular/common';
   templateUrl: './ola-faves.html',
   styleUrl: './ola-faves.css',
 })
-export class OlaFaves {
+export class OlaFaves implements OnInit {
   // private readonly peopleSvc = inject(SwPeopelService);
-  private readonly peopleSvc = inject(SwPeopleService);
+  private peopleSvc = inject(SwPeopleService);
 
-  protected readonly people$ = this.peopleSvc.getPeopleFromSwapiApi();
+  protected people$: Observable<any[]> | undefined; 
+
+  ngOnInit(): void {
+    this.people$ = this.peopleSvc.getPeopleFromSwapiApi();
+  }
 
   protected promisesAsThenables(){
     console.log("Promise Return Begins here ")
