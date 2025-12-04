@@ -25,7 +25,7 @@
         Fave's Count: {{ faveCount() }}
       </p>
       <p>
-        Fave's Fun Fact: Avg Height 0cm
+        Fave's Fun Fact: {{ avgFaveHeight() }}
       </p>
     </li>
     @if (people().length > 0) {
@@ -43,7 +43,10 @@
           >
           <label 
             class="form-check-label stretched-link" 
-            [for]="p.name">
+            [for]="p.name"
+            [class.text-warning]="p.invalidHeight"            
+            [title]="p.invalidHeight ? 'Height: unknown' : `Height: ${p.heightInCentimeters} cm`"
+          >
             {{ p.name }}
           </label>
         </li>
