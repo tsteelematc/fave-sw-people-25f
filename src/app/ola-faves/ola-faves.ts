@@ -1,7 +1,6 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, inject, OnInit, signal, Signal, WritableSignal } from '@angular/core';
 // import { SwPeopelService } from '../sw-peopel.service';
 import { SwPeopleService } from '../sw-people.service';
-import { AsyncPipe } from '@angular/common';
 import { firstValueFrom } from 'rxjs';
 
 type FaveDisplay = {
@@ -12,7 +11,7 @@ type FaveDisplay = {
 
 @Component({
   selector: 'app-ola-faves',
-  imports: [AsyncPipe],
+  imports: [],
   templateUrl: './ola-faves.html',
   styleUrl: './ola-faves.css',
 })
@@ -20,11 +19,21 @@ export class OlaFaves implements OnInit {
   // private readonly peopleSvc = inject(SwPeopelService);
   private peopleSvc = inject(SwPeopleService);
 
-  protected people: any[] | undefined; 
+  protected people: WritableSignal<FaveDisplay[]> = signal([]); 
 
   async ngOnInit() {
-    this.people = await firstValueFrom( 
+    const people = await firstValueFrom( 
     this.peopleSvc.getPeopleFromSwapiApi()
+    );
+
+    this.people.set(
+      people.map(
+        p => ({
+          name: p.name,
+          checked: false,
+          heightInCentimeters: Number(p.height)
+        } as FaveDisplay)
+      )
     );
   }  
 

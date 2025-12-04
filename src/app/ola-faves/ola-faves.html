@@ -36,8 +36,8 @@
     </p>
   </li>
   
-  @if(people){
-  @for (p of people; track p){
+  @if(people().length > 0) {
+  @for (p of people(); track p){
   <li 
     class="list-group-item"
   >
