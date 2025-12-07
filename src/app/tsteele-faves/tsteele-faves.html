@@ -30,6 +30,12 @@
       Faves Fun Fact: {{ avgFaveHeight() }}
     </p>
     <p>
+      <input 
+        type="text"
+        class="form-control form-control-sm mb-1"
+        placeholder="Who are you?"
+        [(ngModel)]="who"
+      >
       <button 
         class="btn btn-link p-0"
         (click)="postToMsTeams()"
