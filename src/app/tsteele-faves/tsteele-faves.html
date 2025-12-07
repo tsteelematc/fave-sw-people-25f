@@ -29,6 +29,14 @@
     <p>
       Faves Fun Fact: {{ avgFaveHeight() }}
     </p>
+    <p>
+      <button 
+        class="btn btn-link p-0"
+        (click)="postToMsTeams()"
+      >
+        Post to MS Teams
+      </button>
+    </p>
   </li>
   @if(people().length > 0){
     @for (p of people(); track p) {

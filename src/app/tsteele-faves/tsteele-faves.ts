@@ -87,6 +87,28 @@ export class TsteeleFaves implements OnInit {
     )
   );
 
+  protected readonly postToMsTeams = async () => {
+
+    const commaDelimitedFaves = this.people()
+      .filter(
+        x => x.checked
+      ) 
+      .map(
+        x => x.name
+      )
+      .join(', ')
+    ;
+
+    await this.peopleSvc.postFavesAndFunFactToMsTeams(
+      {
+        name: "Tom Steele",
+        faves: commaDelimitedFaves,
+        "fun-fact": this.avgFaveHeight(),
+
+      }
+    );
+  };
+
   protected promisesAsThenables() {
     const page1 = this.peopleSvc.getPeoplePageOne()
       .then(
