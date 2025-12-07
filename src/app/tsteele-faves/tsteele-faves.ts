@@ -92,24 +92,29 @@ export class TsteeleFaves implements OnInit {
 
   protected readonly postToMsTeams = async () => {
 
-    const commaDelimitedFaves = this.people()
-      .filter(
-        x => x.checked
-      ) 
-      .map(
-        x => x.name
-      )
-      .join(', ')
-    ;
+    try {
+      const commaDelimitedFaves = this.people()
+        .filter(
+          x => x.checked
+        ) 
+        .map(
+          x => x.name
+        )
+        .join(', ')
+      ;
 
-    await this.peopleSvc.postFavesAndFunFactToMsTeams(
-      {
-        name: this.who,
-        faves: commaDelimitedFaves,
-        "fun-fact": this.avgFaveHeight(),
+      await this.peopleSvc.postFavesAndFunFactToMsTeams(
+        {
+          name: this.who,
+          faves: commaDelimitedFaves,
+          "fun-fact": this.avgFaveHeight(),
+        }
+      );
+    }
 
-      }
-    );
+    catch (err) {
+      console.warn(err);
+    }
   };
 
   protected promisesAsThenables() {
