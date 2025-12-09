@@ -10,6 +10,8 @@ type FaveDisplay = {
   invalidHeight: boolean;
 };
 
+const brysonHeight = 177;
+
 @Component({
   selector: 'app-tsteele-faves',
   imports: [FormsModule],
@@ -26,6 +28,7 @@ export class TsteeleFaves implements OnInit {
   //
   // Signals...
   //
+  // protected people: WritableSignal<FaveDisplay[]> = signal((() => [])());
   protected people: WritableSignal<FaveDisplay[]> = signal([]);
 
   protected faveCount = computed(
@@ -40,19 +43,21 @@ export class TsteeleFaves implements OnInit {
         person => person.checked && !person.invalidHeight
       );
 
-      // Sum their height
-      const sumOfFavesHeightInCentimeters = faves.reduce(
-        (acc, favePerson) => acc + favePerson.heightInCentimeters,
-        0,
+      // Objects with taller/shorter/same...
+      const tallerShorterSame = faves.map(
+        x => (
+          x.heightInCentimeters === brysonHeight
+            ? "Same Height"
+            : x.heightInCentimeters > brysonHeight
+              ? "Taller"
+              : "Shorter"
+        )
       );
 
+      console.log(tallerShorterSame)
+
       // Return their avg height
-      return this.faveCount() > 0
-        ? faves.length > 0
-          ? `Avg Height ${(sumOfFavesHeightInCentimeters / faves.length).toFixed(2)} cm  ${this.faveCount() != faves.length ? '** some faves are missing height info' : ''}`
-          : '** All Selected Faves Missing Height Info'
-        : "No Faves Selected"
-      ;
+      return `${tallerShorterSame.filter(x => x == "Taller").length} taller / ${tallerShorterSame.filter(x => x == "Shorter").length} shorter / ${tallerShorterSame.filter(x => x == "Same Height").length} same height`;
 
     }
   );
