@@ -138,8 +138,30 @@ export class Yyang22Faves implements OnInit {
   );
   protected who = "";
 
-  protected readonly postToMsTeams = () => {
+  protected readonly postToMsTeams = async() => {
+    try {
+      const commaDelimitedFaves = this.people()
+        .filter(
+          x => x.checked
+        )
+        .map(
+          x => x.name
+        )
+        .join(', ')
+      ;
 
+      await this.peopleSvc.postFavesAndFunFacToMsTeams(
+        {
+          name: this.who,
+          faves: commaDelimitedFaves,
+          fun-fact: this.avgFaveHeight(),
+
+        }
+      );
+    }
+    catch (err) {
+      console.warn(err);
+    }
   }
 
   protected promiseAsThenables() {
