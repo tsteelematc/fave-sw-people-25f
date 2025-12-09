@@ -34,6 +34,18 @@
     <p>
       Faves Fun Fact: Avg Height is {{ avgFaveHeight() }}
     </p>
+    <p>
+      <input class="form-control form-control-sm mb-1" 
+        placeholder ="Who are you"
+        type="text"
+        [(ngModel)] = "who"
+      />
+    </p>
+    <button class="btn btn-link p-0"
+      (click)="postToMsTeams()">
+      Post to MS Teams
+    </button>
+
   </li>
   
   @if(people().length > 0) {

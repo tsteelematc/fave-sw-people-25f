@@ -2,6 +2,7 @@ import { Component, computed, inject, OnInit, signal, Signal, WritableSignal } f
 // import { SwPeopelService } from '../sw-peopel.service';
 import { SwPeopleService } from '../sw-people.service';
 import { firstValueFrom } from 'rxjs';
+import { FormsModule } from '@angular/forms';
 
 type FaveDisplay = {
   name: string;
@@ -12,7 +13,7 @@ type FaveDisplay = {
 
 @Component({
   selector: 'app-ola-faves',
-  imports: [],
+  imports: [FormsModule],
   templateUrl: './ola-faves.html',
   styleUrl: './ola-faves.css',
 })
@@ -75,6 +76,34 @@ export class OlaFaves implements OnInit {
       )
     );
   };
+
+  protected who ="";
+
+
+  protected readonly postToMsTeams = async () => {
+    try {
+      const commaDelimitedFaves = this.people()
+        .filter(
+          x => x.checked
+        )
+        .map(
+          x => x.name
+        )
+        .join(',')
+        ;
+        await this.peopleSvc.postFavesAndFunFactToMsTeams(
+        {
+          name: this.who,
+          faves: commaDelimitedFaves,
+          "fun-fact": this.avgFaveHeight(),
+        }
+      )
+    }
+    catch (err) {
+      console.warn(err);
+    }
+  };
+
 
   protected promisesAsThenables(){
     console.log("Promise Return Begins here ")
