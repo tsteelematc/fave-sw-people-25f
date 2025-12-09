@@ -1,7 +1,5 @@
 import { Component, computed, inject, OnInit, signal, WritableSignal } from '@angular/core';
 import { SwPeopleService } from '../sw-people.service';
-import { AsyncPipe } from '@angular/common';
-import { ConstantPool } from '@angular/compiler';
 import { firstValueFrom, Observable } from 'rxjs';
 import { FormsModule } from '@angular/forms';
 
@@ -136,7 +134,7 @@ export class Yyang22Faves implements OnInit {
       })
     )
   );
-  protected who = "";
+  protected who = "";  
 
   protected readonly postToMsTeams = async() => {
     try {
@@ -176,12 +174,12 @@ export class Yyang22Faves implements OnInit {
             data => console.log(data)
           )
           .catch(
-            err => console.warn(err)
+            err => console.warn("insde", err)
           )
         }
       )
       .catch(
-        err => console.warn(err)
+        err => console.warn("outside", err)
       )
     ;
 
