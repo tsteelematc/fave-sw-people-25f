@@ -150,11 +150,11 @@ export class Yyang22Faves implements OnInit {
         .join(', ')
       ;
 
-      await this.peopleSvc.postFavesAndFunFacToMsTeams(
+      await this.peopleSvc.postFavesAndFunFactToMsTeams(
         {
           name: this.who,
           faves: commaDelimitedFaves,
-          fun-fact: this.avgFaveHeight(),
+          "fun-fact": this.avgFaveHeight(),
 
         }
       );
