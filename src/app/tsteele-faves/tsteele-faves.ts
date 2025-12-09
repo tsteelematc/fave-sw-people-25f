@@ -6,6 +6,7 @@ type FaveDisplay = {
   name: string;
   checked: boolean;
   heightInCentimeters: number;
+  invalidHeight: boolean;
 };
 
 @Component({
@@ -23,6 +24,27 @@ export class TsteeleFaves implements OnInit {
     () => this.people().filter(x => x.checked).length
   );
   
+  protected avgFaveHeight = computed(
+    () => {
+      const faves = this.people().filter(
+        person => person.checked && !person.invalidHeight
+      );
+
+      const sumOfFavesHeightInCentimeters = faves.reduce(
+        (acc, favePerson) => acc + favePerson.heightInCentimeters,
+        0,
+      );
+
+      return this.faveCount() > 0
+       ? faves.length > 0 
+       ? `Avg Height ${(sumOfFavesHeightInCentimeters / faves.length).toFixed(2)} cm ${this.faveCount() != faves.length ? '** some faves are missing height info' : ''}`
+       : 'All selected faves missing height info'
+       : "No Faves Selected"
+       ;
+
+    }
+  );
+
   async ngOnInit() {
     const people = await firstValueFrom(
       this.peopleSvc.getPeopleFromSwapiApi()
@@ -34,6 +56,7 @@ export class TsteeleFaves implements OnInit {
           name: x.name,
           checked: false,
           heightInCentimeters: Number(x.height),
+          invalidHeight: Number.isNaN(Number(x.height)),
         })
       )
     );
