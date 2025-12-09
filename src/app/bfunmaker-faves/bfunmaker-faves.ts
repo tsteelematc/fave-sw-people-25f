@@ -7,7 +7,8 @@ type FaveDisplay = {
   name: string;
   checked: boolean;
   heightInCentimeters: number;
-}
+  invalidHeight: boolean;
+};
 
 @Component({
   selector: 'app-bfunmaker-faves',
@@ -25,6 +26,33 @@ export class BfunmakerFaves implements OnInit {
     () => this.people().filter(x=> x.checked).length
   );
 
+  
+  protected avgFaveHeight = computed(
+    () => {
+
+      // Get selected faves
+      const faves = this.people().filter(
+        person => person.checked && !person.invalidHeight
+      );
+
+      // Sum their height
+      const sumOfFavesHeightInCentimeters = faves.reduce(
+        (acc, favePerson) => acc + favePerson.heightInCentimeters,
+        0,
+      );
+
+      // Return their avg height
+      return this.faveCount() > 0
+        ? faves.length > 0
+          ? `Avg Height ${(sumOfFavesHeightInCentimeters / faves.length).toFixed(2)} cm  ${this.faveCount() != faves.length ? '** some faves are missing height info' : ''}`
+          : '** All Selected Faves Missing Height Info'
+        : "No Faves Selected"
+      ;
+
+    }
+  );
+  
+
   async ngOnInit() {
     const people = await firstValueFrom(this.peopleSvc.getPeopleFromSwapiApi());
 
@@ -33,7 +61,8 @@ export class BfunmakerFaves implements OnInit {
         swapiPerson => ({
           name: swapiPerson.name,
           checked: false,
-          heightInCentimeters: Number(swapiPerson.height)
+          heightInCentimeters: Number(swapiPerson.height),
+          invalidHeight: Number.isNaN(Number(swapiPerson.height)),
         })
       )
     )
@@ -54,8 +83,29 @@ export class BfunmakerFaves implements OnInit {
 
   protected who = "";
 
-  protected readonly postToMSTeams = () => {
+  protected readonly postToMSTeams = async () => {
+    try {
+      const commaDelimtedFaves = this.people()
+      .filter(
+        x => x.checked
+      )
+      .map(
+        x => x.name
+      )
+      .join(', ')
 
+    await this.peopleSvc.postFavesAndFunFactToMsTeams(
+      {
+        name: this.who,
+        faves: commaDelimtedFaves,
+        "fun-fact": this.avgFaveHeight()
+      }
+    );
+    }
+
+    catch (err) {
+      console.warn(err);
+    }
   }
 
   protected promisesAsThenables() {
