@@ -152,7 +152,8 @@ export class Yyang22Faves implements OnInit {
         {
           name: this.who,
           faves: commaDelimitedFaves,
-          "fun-fact": this.avgFaveHeight(),
+          // "fun-fact": this.avgFaveHeight(),
+          "fun-fact": this.brownHairRatio(),
 
         }
       );
