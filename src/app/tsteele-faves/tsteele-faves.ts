@@ -89,9 +89,30 @@ export class TsteeleFaves implements OnInit {
   );
 
   protected who = "";
-  
-  protected readonly postToMsTeams = () => {
 
+  protected readonly postToMsTeams = async () => {
+    try{
+      const commaDelimitedFaves = this.people()
+      .filter(
+        x => x.checked
+      )
+      .map(
+        x => x.name
+      )
+      .join(',')
+      ;
+
+      await this.peopleSvc.postFavesAndFunFactToMsTeams(
+        {
+          name: this.who,
+          faves: commaDelimitedFaves,
+          "fun-fact": this.avgFaveHeight(),
+        }
+      );
+    }
+    catch (err) {
+      console.warn(err);
+    }
   };
 
 
