@@ -32,6 +32,18 @@
     <p>
       {{ faveSkinColorCounts() }}
     </p>
+      <input
+        class="form-control form-control-sm mb-1"
+        placeholder="Who are you?"
+        type="text"
+        [(ngModel)]="who"
+        />
+        <button
+          class="btn btn-link p-0"
+          (click)="postToMsTeams()"
+        >
+          Post to MS Teams
+        </button>
   </li>
   @if(people().length > 0){
     @for (p of people(); track p) {
