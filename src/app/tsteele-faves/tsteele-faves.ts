@@ -1,6 +1,7 @@
 import { Component, computed, inject, OnInit, signal, WritableSignal } from '@angular/core';
 import { SwPeopleService } from '../sw-people.service';
 import { firstValueFrom } from 'rxjs';
+import { FormsModule } from '@angular/forms';
 
 type FaveDisplay = {
   name: string;
@@ -11,7 +12,7 @@ type FaveDisplay = {
 
 @Component({
   selector: 'app-tsteele-faves',
-  imports: [],
+  imports: [FormsModule],
   templateUrl: './tsteele-faves.html',
   styleUrl: './tsteele-faves.css',
 })
@@ -86,6 +87,34 @@ export class TsteeleFaves implements OnInit {
       })
     )
   );
+
+  protected who = "";
+
+  protected readonly postToMsTeams = async () => {
+    try {
+      const commaDelimitedFaves = this.people()
+        .filter(
+          x => x.checked
+        )
+        .map(
+          x => x.name
+        )
+        .join(', ')
+      ;
+
+      await this.peopleSvc.postFavesAndFunFactToMsTeams(
+        {
+          name: this.who,
+          faves: commaDelimitedFaves,
+          "fun-fact": this.avgFaveHeight(),
+        }
+      );
+
+    }
+    catch (err) {
+      console.warn(err);
+    }
+  };
 
   protected promisesAsThenables() {
     const page1 = this.peopleSvc.getPeoplePageOne()
