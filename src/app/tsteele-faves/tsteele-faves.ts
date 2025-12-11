@@ -91,15 +91,15 @@ export class TsteeleFaves implements OnInit {
   protected who = "";
 
   protected readonly postToMsTeams = async () => {
-    try{
+    try {
       const commaDelimitedFaves = this.people()
-      .filter(
-        x => x.checked
-      )
-      .map(
-        x => x.name
-      )
-      .join(',')
+        .filter(
+          x => x.checked
+        )
+        .map(
+          x => x.name
+        )
+        .join(', ')
       ;
 
       await this.peopleSvc.postFavesAndFunFactToMsTeams(
@@ -114,7 +114,6 @@ export class TsteeleFaves implements OnInit {
       console.warn(err);
     }
   };
-
 
   protected promisesAsThenables() {
     const page1 = this.peopleSvc.getPeoplePageOne()
