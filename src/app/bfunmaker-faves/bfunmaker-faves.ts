@@ -51,6 +51,10 @@ export class BfunmakerFaves implements OnInit {
 
     }
   );
+
+  protected sortHeightComparedToBryson = () => {
+    
+  }
   
 
   async ngOnInit() {
