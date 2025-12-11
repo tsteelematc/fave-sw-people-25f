@@ -41,8 +41,8 @@ export class OlaFaves implements OnInit {
         ? `${(sumHeight / favesWithHeightInfo.length).toFixed(2)}cm 
             ${this.faveCount() != favesWithHeightInfo.length 
               ? " **some faves have missing height information" 
-              : " "}`
-        : "N/A"
+              : ""}`
+        : "No Faves Selected"
       ;
     }
   );
