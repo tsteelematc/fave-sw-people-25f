@@ -13,20 +13,39 @@
         Promises Funn
       </button>
     </li>
-  @if(people$ | async; as people){
-    @for (p of people; track p) {
+    <li class="list-group-item list-group-item-dark">
+      <p>
+        Fave's count: {{faveCount()}}
+      </p>
+      <p>
+        Faves Fun Fact: {{averageFaveHeight()}}
+      </p>
+
+  
+
+      <p>
+        <input class="form-control form-control-sm mb-1" placeholder="type something?.. " type="text"  [(ngModel)]="who"/>
+        <button class="btn btn-link p-0" (click)="postToMsTeams()">///Post to MS Teams///</button>
+      </p>
+
+    </li>
+  @if(people().length > 0){
+    @for (p of people(); track p) {
       <li 
         class="list-group-item"
       >
         <input 
           class="form-check-input me-3" 
           type="checkbox" 
-          value="" 
+          [checked]="p.checked" 
+          (change)="toggleChecked(p)"
           [id]="p.name"
         >
         <label 
           class="form-check-label stretched-link" 
           [for]="p.name"
+          [class.text-warning]="p.invalidHeight"
+          [title]="p.invalidHeight ? 'Height: unknown' : `Height: ${p.heightInCentimeters} cm`"
         >
           {{ p.name }}
         </label>

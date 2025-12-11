@@ -1,18 +1,95 @@
-import { Component, inject } from '@angular/core';
+import { Component, computed, inject, OnInit, signal, WritableSignal } from '@angular/core';
 import { SwPeopleService } from '../sw-people.service';
-import { AsyncPipe } from '@angular/common';
+import { firstValueFrom} from 'rxjs';
+import { FormsModule } from '@angular/forms';
+
+type FaveDisplay = {
+  name: string;
+  checked: boolean;
+  heightInCentimeters: number;
+  invalidHeight: boolean;
+};
 
 @Component({
   selector: 'app-akoroliova-fave-sw-people',
-  imports: [AsyncPipe],
+  imports: [FormsModule],
   templateUrl: './akoroliova-fave-sw-people.html',
   styleUrl: './akoroliova-fave-sw-people.css',
 })
-export class AkoroliovaFaveSwPeople {
+export class AkoroliovaFaveSwPeople implements OnInit {
   private readonly peopleSvc = inject(SwPeopleService);
-  private readonly Promise = inject(SwPeopleService);
+  //private readonly Promise = inject(SwPeopleService);
 
-  protected readonly people$ = this.peopleSvc.getPeopleFromSwapiApi();
+
+
+
+  protected people : WritableSignal<FaveDisplay[]> = signal([]);
+
+  protected faveCount = computed(
+    () => this.people().filter(x => x.checked).length
+  );
+
+protected averageFaveHeight = computed(() => {
+  const faves = this.people().filter(
+    person => person.checked && !person.invalidHeight
+  );
+
+  const sumOfFaveHeightsInCentimeters = faves.reduce(
+    (acc, favePerson) => acc + favePerson.heightInCentimeters,
+    0
+  );
+
+  return this.faveCount() > 0 
+    ? faves.length > 0 
+    ? `Average height ${(sumOfFaveHeightsInCentimeters / faves.length).toFixed(2)} cm  ${this.faveCount() != faves.length ? '** some faves are missing height info **' : ''}`
+    : '**all selected faves missing height info**'
+    : "No faves selected";
+});
+
+  async ngOnInit() {
+    const people= await firstValueFrom (this.peopleSvc.getPeopleFromSwapiApi());
+    this.people.set(
+      people.map(
+        x => ({
+          name: x.name,
+          checked: false,
+          heightInCentimeters: Number(x.height),
+          invalidHeight: Number.isNaN(Number(x.height)),
+        })
+      )
+    );
+  }
+
+  protected readonly toggleChecked = (personToToggle: FaveDisplay) => this.people.update(
+    previousPeople => previousPeople.map(
+      person => ({
+        ...person,
+      checked: person.name === personToToggle.name
+      ? !person.checked
+      : person.checked 
+    })
+    )
+  );
+
+  protected who = "";
+
+  protected readonly postToMsTeams = async () => {
+    try {
+      const commaDelimetedFaves = this.people()
+      .filter(x => x.checked)
+      .map(x => x.name)
+      .join(', ');
+      await this.peopleSvc.postFavesAndFunFactToMsTeams({
+        name: this.who,
+        faves: commaDelimetedFaves,
+        "fun-fact": this.averageFaveHeight(),
+      });
+    }
+    catch (err) {
+      console.warn(err);
+    }
+  };
+
   protected promisesAsThenables() {
 
     const page1 = this.peopleSvc.getPeoplePageOne().then(
