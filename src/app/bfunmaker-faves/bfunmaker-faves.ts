@@ -31,7 +31,7 @@ export class BfunmakerFaves implements OnInit {
   );
 
   
-  protected avgFaveHeight = computed(
+  protected sortHeight = computed(
     () => {
 
       // Get selected faves
@@ -40,7 +40,7 @@ export class BfunmakerFaves implements OnInit {
       );
 
       // Create Map Function to create new data set of height compared to bryson height
-      const comparedHeights = () => {
+      const comparedHeights = 
         faves.map(
           x => (x.heightInCentimeters === brysonHeight
           ? "Same Height"
@@ -48,11 +48,10 @@ export class BfunmakerFaves implements OnInit {
               ? "Taller"
                 : "Shorter")
         )
-      }
 
       // Return Tick String of output 
       console.log(comparedHeights)
-      return `Same Height : ${comparedHeights}`
+      return `Same Height: ${comparedHeights.filter(x => x === "Same Height").length} | Taller: ${comparedHeights.filter(x => x === "Taller").length} | Shorter ${comparedHeights.filter(x => x === "Shorter").length}`
     }
   );
 
@@ -101,7 +100,7 @@ export class BfunmakerFaves implements OnInit {
       {
         name: this.who,
         faves: commaDelimtedFaves,
-        "fun-fact": this.avgFaveHeight()
+        "fun-fact": this.sortHeight()
       }
     );
     }

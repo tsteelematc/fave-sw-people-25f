@@ -18,8 +18,14 @@
         Fave Count: {{ faveCount() }}
       </p>
       <p>
-        Fave Fun Fact: {{ avgFaveHeight()}}
+
+        Fun Fact: Fave People Height compared to Bryson's Height
       </p>
+      @if (faveCount() === 0) {
+        <p>Favorites not selected, Nothing to compare</p>
+      } @else {
+        <p>{{ sortHeight() }}</p>
+      }
       <p>
         <input type="text" class="form-control form-control-sm mb-1" placeholder="Who are you?" [(ngModel)]="who">
         <button class="btn btn-link p-0" (click)="postToMSTeams()">
