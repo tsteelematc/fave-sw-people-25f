@@ -109,7 +109,6 @@ export class TsteeleFaves implements OnInit {
           "fun-fact": this.avgFaveHeight(),
         }
       );
-
     }
     catch (err) {
       console.warn(err);
