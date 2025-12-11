@@ -9,7 +9,6 @@ type FaveDisplay = {
   checked: boolean;
   heightInCentimeters: number;
   invalidHeight: boolean;
-  skinColor: string;
 };
 
 @Component({
@@ -60,31 +59,6 @@ export class KimbergFaves implements OnInit {
     }
   );
 
-  protected faveSkinColorCounts = computed(
-  () => {
-      const faves = this.people().filter(x => x.checked);
-      if (faves.length === 0) return "No faves selected";
-      
-      const counts = faves.reduce((acc, p) => {
-
-      const colors = p.skinColor.split(",").map(x => x.trim());
-
-      colors.forEach(color => {
-        acc[color] = (acc[color] || 0) + 1;
-      });
-      return acc;
-    }, {} as Record<string, number>);
-
-    const sortedEntries = Object.entries(counts)
-      .sort((a, b) => b[1] - a[1]);
-
-    const entries = sortedEntries
-      .map(([color, count]) => `${color}: ${count}`)
-      .join(", ");
-      
-    return `Skin Colors Among Faves Selected: ${sortedEntries.length} (${entries})`;
-    }
-  );
 
   //
   // Other methods/funcs
