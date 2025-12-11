@@ -47,7 +47,7 @@ export class BfunmakerFaves implements OnInit {
             : x.heightInCentimeters > brysonHeight
               ? "Taller"
                 : "Shorter")
-        )
+        );
 
       // Return Tick String of output 
       console.log(comparedHeights)
