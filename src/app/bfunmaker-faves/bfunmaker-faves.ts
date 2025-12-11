@@ -10,6 +10,10 @@ type FaveDisplay = {
   invalidHeight: boolean;
 };
 
+
+
+const brysonHeight = 177;
+
 @Component({
   selector: 'app-bfunmaker-faves',
   imports: [FormsModule],
@@ -35,27 +39,22 @@ export class BfunmakerFaves implements OnInit {
         person => person.checked && !person.invalidHeight
       );
 
-      // Sum their height
-      const sumOfFavesHeightInCentimeters = faves.reduce(
-        (acc, favePerson) => acc + favePerson.heightInCentimeters,
-        0,
-      );
+      // Create Map Function to create new data set of height compared to bryson height
+      const comparedHeights = () => {
+        faves.map(
+          x => (x.heightInCentimeters === brysonHeight
+          ? "Same Height"
+            : x.heightInCentimeters > brysonHeight
+              ? "Taller"
+                : "Shorter")
+        )
+      }
 
-      // Return their avg height
-      return this.faveCount() > 0
-        ? faves.length > 0
-          ? `Avg Height ${(sumOfFavesHeightInCentimeters / faves.length).toFixed(2)} cm  ${this.faveCount() != faves.length ? '** some faves are missing height info' : ''}`
-          : '** All Selected Faves Missing Height Info'
-        : "No Faves Selected"
-      ;
-
+      // Return Tick String of output 
+      console.log(comparedHeights)
+      return ``
     }
   );
-
-  protected sortHeightComparedToBryson = () => {
-    
-  }
-  
 
   async ngOnInit() {
     const people = await firstValueFrom(this.peopleSvc.getPeopleFromSwapiApi());
