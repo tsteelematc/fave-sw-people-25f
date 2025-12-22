@@ -21,15 +21,15 @@ export class SwPeopleService {
 
   public getPeopleFromSwapiApi() {
 
-    return this.http.get<any>('https://swapi.dev/api/people').pipe(
-      expand(
-        page => page.next
-          ? this.http.get<any>(page.next)
-          : EMPTY
-      ),
-      map(
-        response => response.results
-      ),
+    return this.http.get<any>('https://swapi.info/api/people').pipe(
+      // expand(
+      //   page => page?.next
+      //     ? this.http.get<any>(page.next)
+      //     : EMPTY
+      // ),
+      // map(
+      //   response => response.results
+      // ),
       tap(
         x => console.log(x)
       ),
@@ -54,7 +54,7 @@ export class SwPeopleService {
     // return Promise.reject("No soup for you : - )");
 
 
-    const pageObvservable = this.http.get<any>('https://swapi.dev/api/people/?page=1').pipe(
+    const pageObvservable = this.http.get<any>('https://swapi.info/api/people/?page=1').pipe(
       map(
         response => response.results
       ),
@@ -68,7 +68,7 @@ export class SwPeopleService {
 
     // return Promise.reject("No candy for you : - )");
 
-    const pageObvservable = this.http.get<any>('https://swapi.dev/api/people/?page=2').pipe(
+    const pageObvservable = this.http.get<any>('https://swapi.info/api/people/?page=2').pipe(
       map(
         response => response.results
       ),
